@@ -188,7 +188,7 @@ function authView(msg=''){const u=tab=='up';$.innerHTML=hd()+`<h1 style="font-si
 async function enter(j){sv(norm(j));await prof();intro()}
 async function doIn(){try{await enter(await au('token?grant_type=password',{email:v('em').trim(),password:v('pw')}))}catch(e){sv(null);authView('Não foi possível entrar. Confira o e-mail e a senha.')}}
 async function doUp(){const cv=document.getElementById('ip')&&document.getElementById('ip').checked?v('cv').trim():'';if(!v('nm').trim()||!v('sn').trim())return authView('Preencha nome e sobrenome.');
-try{const j=await au('signup',{email:v('em').trim(),password:v('pw'),data:{nome:v('nm').trim(),sobrenome:v('sn').trim(),convite:cv}});if(!j.access_token){tab='in';return authView('Conta criada. Confirme seu e-mail e depois entre.')}await enter(j)}
+try{const j=await au('signup?redirect_to='+encodeURIComponent(location.origin+location.pathname),{email:v('em').trim(),password:v('pw'),data:{nome:v('nm').trim(),sobrenome:v('sn').trim(),convite:cv}});if(!j.access_token){tab='in';return authView('Conta criada. Confirme seu e-mail e depois entre.')}await enter(j)}
 catch(e){authView('Não foi possível criar a conta: '+E(e.message)+(cv?' (confira também o código de convite)':''))}}
 function logout(){sv(null);PF=null;authView()}
 const homeBtns=()=>`<p class="mut" style="margin:0 0 10px">Olá, <b>${E(PF.nome)}</b>${PF.papel=='professor'?' · '+E(PF.registro||'')+' (professor)':''}</p><button class="btn p" style="width:100%" onclick="start()">Iniciar simulado</button><button class="btn" style="width:100%;margin-top:10px" onclick="hist()">${PF.papel=='professor'?'Painel dos alunos':'Minhas tentativas'}</button><button class="btn" style="width:100%;margin-top:10px" onclick="logout()">Sair</button>`;
